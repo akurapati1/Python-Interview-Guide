@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Python Interview Prep — 7 YOE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=JetBrains+Mono:wght@400;500;700&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0b0f0e;
+    --bg-soft: #11171a;
+    --panel: #141b1f;
+    --ink: #e8e3d8;
+    --ink-dim: #9aa0a4;
+    --accent: #d4ff3d;      /* electric lime */
+    --accent-2: #ff6b3d;    /* burnt orange */
+    --accent-3: #6ec1ff;    /* clear sky */
+    --border: #1f272c;
+    --code-bg: #0a0d0f;
+    --code-ink: #d8d6cf;
+    --highlight: #ffe066;
+    --easy: #6ec1ff;
+    --med: #ffb84d;
+    --hard: #ff6b6b;
+    --xhard: #d36bff;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; background: var(--bg); color: var(--ink);
+    font-family: 'Inter Tight', system-ui, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* grain texture */
+  body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 1;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.9  0 0 0 0 0.9  0 0 0 0 0.85  0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    opacity: 0.5; mix-blend-mode: overlay;
+  }
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 2; }
+
+  /* HERO */
+  header.hero {
+    padding: 64px 0 40px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  header.hero::after{
+    content:""; position:absolute; right:-120px; top:-120px;
+    width:520px; height:520px; border-radius:50%;
+    background: radial-gradient(circle at 30% 30%, rgba(212,255,61,0.18), transparent 60%);
+    pointer-events:none;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 18px;
+  }
+  h1.title {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(44px, 7vw, 88px);
+    line-height: 0.95; margin: 0 0 18px;
+    letter-spacing: -0.025em;
+  }
+  h1.title em {
+    font-style: italic; font-weight: 400; color: var(--accent-2);
+  }
+  .subtitle {
+    font-size: 18px; max-width: 720px; color: var(--ink-dim);
+    margin-bottom: 32px;
+  }
+  .meta-row {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    color: var(--ink-dim);
+  }
+  .meta-row span { padding: 6px 12px; border: 1px solid var(--border); border-radius: 999px; }
+  .meta-row span b { color: var(--accent); font-weight: 500; }
+
+  /* NAV */
+  nav.toc {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(11,15,14,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+  }
+  .toc-inner {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  }
+  .toc-inner a {
+    color: var(--ink-dim); text-decoration: none;
+    padding: 6px 10px; border-radius: 6px;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+  }
+  .toc-inner a:hover {
+    color: var(--accent); border-color: var(--border); background: var(--bg-soft);
+  }
+
+  /* SECTIONS */
+  section.topic {
+    padding: 72px 0 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent); font-size: 13px; letter-spacing: 0.18em;
+    margin-bottom: 12px; text-transform: uppercase;
+  }
+  h2.section-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(32px, 4vw, 52px); font-weight: 600;
+    margin: 0 0 12px; letter-spacing: -0.02em; line-height: 1.05;
+  }
+  .section-desc { color: var(--ink-dim); max-width: 780px; margin-bottom: 32px; }
+
+  /* DIFFICULTY PILL */
+  .pill {
+    display: inline-block; padding: 2px 10px; border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-right: 8px;
+  }
+  .pill.easy { background: rgba(110,193,255,0.15); color: var(--easy); border:1px solid rgba(110,193,255,0.3); }
+  .pill.med  { background: rgba(255,184,77,0.15);  color: var(--med);  border:1px solid rgba(255,184,77,0.3); }
+  .pill.hard { background: rgba(255,107,107,0.15); color: var(--hard); border:1px solid rgba(255,107,107,0.3); }
+  .pill.xhard{ background: rgba(211,107,255,0.15); color: var(--xhard); border:1px solid rgba(211,107,255,0.3); }
+
+  /* QUESTION CARDS */
+  .q-grid {
+    display: grid; grid-template-columns: 1fr; gap: 14px;
+  }
+  details.q {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  details.q[open] { border-color: var(--accent); }
+  details.q summary {
+    cursor: pointer; padding: 18px 22px;
+    font-size: 16px; font-weight: 500;
+    display: flex; align-items: flex-start; gap: 12px;
+    list-style: none;
+  }
+  details.q summary::-webkit-details-marker { display: none; }
+  details.q summary::after {
+    content: "+"; margin-left: auto; font-family: 'JetBrains Mono', monospace;
+    color: var(--ink-dim); font-size: 20px; transition: transform 0.2s;
+  }
+  details.q[open] summary::after { content: "−"; color: var(--accent); }
+  .q-body {
+    padding: 0 22px 22px;
+    border-top: 1px solid var(--border);
+    margin-top: 4px; padding-top: 18px;
+  }
+  .q-body p { margin: 0 0 12px; color: var(--ink); }
+  .q-body ul, .q-body ol { margin: 8px 0 14px; padding-left: 22px; color: var(--ink); }
+  .q-body li { margin-bottom: 6px; }
+  .q-body b, .q-body strong { color: var(--accent); font-weight: 600; }
+  .q-body .gotcha {
+    background: rgba(255,107,61,0.08);
+    border-left: 3px solid var(--accent-2);
+    padding: 10px 14px; margin: 12px 0;
+    font-size: 14px;
+  }
+  .q-body .gotcha b { color: var(--accent-2); }
+
+  /* CODE */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    overflow-x: auto;
+    margin: 12px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--code-ink);
+  }
+  pre code .kw  { color: #ff79c6; }
+  pre code .str { color: #f1fa8c; }
+  pre code .com { color: #6272a4; font-style: italic; }
+  pre code .fn  { color: #50fa7b; }
+  pre code .num { color: #bd93f9; }
+  pre code .op  { color: #ff5555; }
+
+  /* INLINE CODE */
+  code.inline {
+    background: var(--bg-soft);
+    color: var(--accent);
+    padding: 1px 6px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.92em;
+  }
+
+  /* CHEAT SHEET TABLE */
+  table {
+    width: 100%; border-collapse: collapse;
+    margin: 18px 0;
+    font-size: 14px;
+  }
+  th, td {
+    text-align: left; padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    background: var(--bg-soft); color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  tr:hover td { background: rgba(212,255,61,0.03); }
+
+  /* TIPS / CALLOUTS */
+  .callout {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    padding: 18px 22px;
+    border-radius: 8px;
+    margin: 24px 0;
+  }
+  .callout h4 {
+    margin: 0 0 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* FOOTER STRIP */
+  footer {
+    padding: 80px 0 60px;
+    text-align: center;
+  }
+  footer .glyph {
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-size: 56px; color: var(--accent-2);
+    margin-bottom: 8px;
+  }
+  footer p { color: var(--ink-dim); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+  /* PROGRESS BAR */
+  .progress {
+    position: fixed; top: 0; left: 0; height: 3px;
+    background: var(--accent); width: 0%;
+    z-index: 100; transition: width 0.1s;
+  }
+
+  /* SUBTITLE INSIDE A SECTION */
+  h3.subhead {
+    font-family: 'Fraunces', serif;
+    font-size: 22px; font-weight: 600;
+    margin: 28px 0 12px; color: var(--accent);
+    letter-spacing: -0.01em;
+  }
+
+  /* ACCENT BARS */
+  .day-card {
+    display: grid; grid-template-columns: 80px 1fr;
+    gap: 18px; align-items: start;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 18px 22px; border-radius: 10px;
+    margin-bottom: 12px;
+  }
+  .day-card .day-num {
+    font-family: 'Fraunces', serif;
+    font-size: 42px; font-style: italic; font-weight: 600;
+    color: var(--accent); line-height: 1;
+  }
+  .day-card h4 { margin: 0 0 6px; font-size: 17px; }
+  .day-card p { margin: 0; color: var(--ink-dim); font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<header class="hero">
+  <div class="container">
+    <div class="eyebrow">// SR. PYTHON ENGINEER · 7 YEARS · INTERVIEW PREPARATION</div>
+    <h1 class="title">Python<br/><em>Interview,</em> from<br/>basics to brutality.</h1>
+    <p class="subtitle">A complete, opinionated study pack covering everything that actually shows up in a senior Python interview: core language, data structures, OOP, concurrency, memory, web frameworks, databases, system design, and behavioral. Each question includes how to answer it well — not just facts, but framing.</p>
+    <div class="meta-row">
+      <span><b>13</b> sections</span>
+      <span><b>120+</b> questions</span>
+      <span><b>40+</b> code snippets</span>
+      <span><b>5</b> system-design walkthroughs</span>
+      <span>Updated <b>2026</b></span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="container toc-inner">
+    <a href="#s1">01 · Core Python</a>
+    <a href="#s2">02 · Data Structures</a>
+    <a href="#s3">03 · OOP</a>
+    <a href="#s4">04 · Functional & Iterators</a>
+    <a href="#s5">05 · Decorators & Context</a>
+    <a href="#s6">06 · Concurrency</a>
+    <a href="#s7">07 · Memory & Perf</a>
+    <a href="#s8">08 · Testing</a>
+    <a href="#s9">09 · Web (Django/Flask/FastAPI)</a>
+    <a href="#s10">10 · Databases & ORMs</a>
+    <a href="#s11">11 · System Design</a>
+    <a href="#s12">12 · DSA Patterns</a>
+    <a href="#s13">13 · Behavioral & Plan</a>
+  </div>
+</nav>
+
+<!-- ============================================================ -->
+<!-- SECTION 1: CORE PYTHON -->
+<!-- ============================================================ -->
+<section class="topic" id="s1">
+  <div class="container">
+    <div class="section-num">Section 01</div>
+    <h2 class="section-title">Core Python — the language itself</h2>
+    <p class="section-desc">If you fumble these, the rest of the interview becomes uphill. For a senior role they aren't checking whether you know the answer — they're checking whether you can explain <em>why</em> Python made that choice and where the trade-off bites.</p>
+
+    <div class="q-grid">
+
+      <details class="q">
+        <summary><span class="pill easy">Easy</span> Mutable vs Immutable — what are they, and why does it matter?</summary>
+        <div class="q-body">
+          <p><b>Immutable:</b> <code class="inline">int, float, bool, str, tuple, frozenset, bytes</code>. Once created, the object can't change; rebinding the name creates a new object.</p>
+          <p><b>Mutable:</b> <code class="inline">list, dict, set, bytearray</code>, and most user-defined classes.</p>
+          <p><b>Why it matters in interviews:</b></p>
+          <ul>
+            <li>Mutable default arguments are a classic bug.</li>
+            <li>Immutables are hashable → can be dict keys / set members.</li>
+            <li>Strings are immutable — repeated concatenation in a loop is O(n²); use <code class="inline">"".join()</code>.</li>
+          </ul>
+<pre><code><span class="com"># The famous trap</span>
+<span class="kw">def</span> <span class="fn">append</span>(x, items=[]):   <span class="com"># default evaluated ONCE at def time</span>
+    items.append(x)
+    <span class="kw">return</span> items
+
+append(<span class="num">1</span>)   <span class="com"># [1]</span>
+append(<span class="num">2</span>)   <span class="com"># [1, 2]  ← shared list!</span>
+
+<span class="com"># Fix:</span>
+<span class="kw">def</span> <span class="fn">append</span>(x, items=<span class="kw">None</span>):
+    <span class="kw">if</span> items <span class="kw">is</span> <span class="kw">None</span>:
+        items = []
+    items.append(x)
+    <span class="kw">return</span> items</code></pre>
+          <div class="gotcha"><b>Senior-level follow-up:</b> "Is a tuple always immutable?" Trick — the tuple itself is, but if it holds a list, that list is still mutable. <code class="inline">t = (1, [2]); t[1].append(3)</code> works.</div>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill easy">Easy</span> <code class="inline">is</code> vs <code class="inline">==</code></summary>
+        <div class="q-body">
+          <p><code class="inline">==</code> calls <code class="inline">__eq__</code> — value equality. <code class="inline">is</code> compares identity (same object in memory, i.e. <code class="inline">id(a) == id(b)</code>).</p>
+          <p>Use <code class="inline">is</code> only for <code class="inline">None</code>, <code class="inline">True</code>, <code class="inline">False</code>, and sentinel checks.</p>
+<pre><code>a = <span class="num">256</span>; b = <span class="num">256</span>; a <span class="kw">is</span> b   <span class="com"># True — small int caching (-5..256)</span>
+a = <span class="num">257</span>; b = <span class="num">257</span>; a <span class="kw">is</span> b   <span class="com"># False (CPython detail, don't rely on it)</span></code></pre>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> Explain the GIL. When does it hurt, when doesn't it?</summary>
+        <div class="q-body">
+          <p>The Global Interpreter Lock is a mutex in CPython that allows only <b>one thread to execute Python bytecode at a time</b>. It exists because CPython's memory management (reference counting) isn't thread-safe without it.</p>
+          <p><b>Hurts:</b> CPU-bound workloads — pure-Python number crunching across multiple threads doesn't scale on multi-core.</p>
+          <p><b>Doesn't hurt:</b></p>
+          <ul>
+            <li>I/O-bound work (network, disk) — the GIL is released during I/O syscalls, so threads still help.</li>
+            <li>C extensions like NumPy that release the GIL during heavy compute.</li>
+            <li><code class="inline">multiprocessing</code> — separate processes, separate GILs.</li>
+          </ul>
+          <p><b>2026 update worth mentioning:</b> PEP 703 — free-threaded CPython (no-GIL build) is available experimentally in 3.13+. Cite it to show currency.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> Shallow vs deep copy</summary>
+        <div class="q-body">
+<pre><code><span class="kw">import</span> copy
+a = [[<span class="num">1</span>, <span class="num">2</span>], [<span class="num">3</span>, <span class="num">4</span>]]
+b = copy.copy(a)       <span class="com"># new outer list, same inner lists</span>
+c = copy.deepcopy(a)   <span class="com"># new everything</span>
+
+a[<span class="num">0</span>].append(<span class="num">99</span>)
+<span class="fn">print</span>(b)   <span class="com"># [[1, 2, 99], [3, 4]]   ← shallow!</span>
+<span class="fn">print</span>(c)   <span class="com"># [[1, 2], [3, 4]]</span></code></pre>
+          <p>Deep-copy uses a memo dict to handle cyclic references and to avoid duplicating objects encountered twice.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> What does <code class="inline">__slots__</code> do?</summary>
+        <div class="q-body">
+          <p>It tells Python to allocate fixed storage for a known set of attributes instead of a per-instance <code class="inline">__dict__</code>. Result: <b>lower memory</b> (often 40–50% per instance), <b>faster attribute access</b>, but no dynamic attribute addition, no <code class="inline">__weakref__</code> by default, and gotchas with multiple inheritance.</p>
+<pre><code><span class="kw">class</span> <span class="fn">Point</span>:
+    __slots__ = (<span class="str">'x'</span>, <span class="str">'y'</span>)
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, x, y):
+        self.x, self.y = x, y
+
+p = Point(<span class="num">1</span>, <span class="num">2</span>)
+p.z = <span class="num">3</span>   <span class="com"># AttributeError</span></code></pre>
+          <p>Use it for value objects you'll create millions of (analytics, simulations, geometric primitives).</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> Truthiness — what evaluates to False?</summary>
+        <div class="q-body">
+          <p><code class="inline">None</code>, <code class="inline">False</code>, <code class="inline">0</code>, <code class="inline">0.0</code>, <code class="inline">0j</code>, empty containers (<code class="inline">""</code>, <code class="inline">[]</code>, <code class="inline">{}</code>, <code class="inline">()</code>, <code class="inline">set()</code>), and objects whose <code class="inline">__bool__</code> or <code class="inline">__len__</code> returns False/0.</p>
+          <div class="gotcha"><b>Gotcha:</b> <code class="inline">if x:</code> and <code class="inline">if x is not None:</code> are NOT equivalent — the first is False for <code class="inline">0</code> and <code class="inline">""</code> too.</div>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Hard</span> What happens when you do <code class="inline">import foo</code>?</summary>
+        <div class="q-body">
+          <ol>
+            <li>Check <code class="inline">sys.modules</code> — if already loaded, return that.</li>
+            <li>Walk <b>finders</b> in <code class="inline">sys.meta_path</code> to locate the module.</li>
+            <li>The finder returns a <b>loader</b>; the loader creates a module object, registers it in <code class="inline">sys.modules</code>, then executes the module code in that module's namespace.</li>
+            <li>Bind the name <code class="inline">foo</code> in the current scope.</li>
+          </ol>
+          <p>Knowing this explains: circular imports (the half-built module is already in <code class="inline">sys.modules</code>), why <code class="inline">importlib.reload</code> is tricky, and how namespace packages work.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Hard</span> LEGB scope rule + <code class="inline">global</code> / <code class="inline">nonlocal</code></summary>
+        <div class="q-body">
+          <p>Name resolution: <b>L</b>ocal → <b>E</b>nclosing → <b>G</b>lobal → <b>B</b>uilt-in.</p>
+<pre><code>x = <span class="str">"global"</span>
+<span class="kw">def</span> <span class="fn">outer</span>():
+    x = <span class="str">"enclosing"</span>
+    <span class="kw">def</span> <span class="fn">inner</span>():
+        <span class="kw">nonlocal</span> x    <span class="com"># modifies outer's x</span>
+        x = <span class="str">"modified"</span>
+    inner()
+    <span class="fn">print</span>(x)        <span class="com"># "modified"</span></code></pre>
+          <p>Without <code class="inline">nonlocal</code>, assignment creates a new local binding — a common closure bug source.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Hard</span> Python 3.10+ structural pattern matching — when actually useful?</summary>
+        <div class="q-body">
+          <p>It's not just <code class="inline">switch</code>. It destructures.</p>
+<pre><code><span class="kw">def</span> <span class="fn">handle</span>(event):
+    <span class="kw">match</span> event:
+        <span class="kw">case</span> {<span class="str">"type"</span>: <span class="str">"click"</span>, <span class="str">"target"</span>: target, <span class="str">"shift"</span>: <span class="kw">True</span>}:
+            <span class="kw">return</span> shift_click(target)
+        <span class="kw">case</span> {<span class="str">"type"</span>: <span class="str">"click"</span>, <span class="str">"target"</span>: target}:
+            <span class="kw">return</span> click(target)
+        <span class="kw">case</span> {<span class="str">"type"</span>: <span class="str">"key"</span>, <span class="str">"code"</span>: code} <span class="kw">if</span> code.isdigit():
+            <span class="kw">return</span> handle_digit(code)
+        <span class="kw">case</span> _:
+            <span class="kw">return</span> <span class="kw">None</span></code></pre>
+          <p>Real win is in parsers, AST walkers, event dispatchers, and protocol message handlers.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill xhard">Senior</span> Name 5 features you actually use from modern Python (3.10–3.13).</summary>
+        <div class="q-body">
+          <ul>
+            <li><b>Structural pattern matching</b> (3.10) — see above.</li>
+            <li><b>Better error messages</b> — fine-grained <code class="inline">SyntaxError</code> locations, "did you mean…" suggestions.</li>
+            <li><b>Type generics syntax</b> (3.12) — <code class="inline">def first[T](xs: list[T]) -> T: ...</code> without <code class="inline">TypeVar</code>.</li>
+            <li><b>Exception groups & except*</b> (3.11) — needed for <code class="inline">asyncio.TaskGroup</code>.</li>
+            <li><b>tomllib</b> in stdlib (3.11) for parsing <code class="inline">pyproject.toml</code> without external deps.</li>
+            <li><b>Free-threaded build (PEP 703)</b> — experimental no-GIL (3.13+).</li>
+            <li><b>JIT compiler (PEP 744)</b> — copy-and-patch JIT in 3.13.</li>
+          </ul>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: DATA STRUCTURES -->
+<!-- ============================================================ -->
+<section class="topic" id="s2">
+  <div class="container">
+    <div class="section-num">Section 02</div>
+    <h2 class="section-title">Built-in data structures & their costs</h2>
+    <p class="section-desc">A senior engineer is expected to reach for the right container without thinking and to justify it in big-O terms.</p>
+
+    <h3 class="subhead">Big-O cheat sheet</h3>
+    <table>
+      <thead>
+        <tr><th>Container</th><th>Lookup</th><th>Insert</th><th>Delete</th><th>Iteration</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>list</td><td>O(1) by idx</td><td>O(1) append, O(n) insert(0)</td><td>O(n)</td><td>O(n)</td><td>Dynamic array, 2× growth</td></tr>
+        <tr><td>tuple</td><td>O(1)</td><td>—</td><td>—</td><td>O(n)</td><td>Immutable, hashable if contents are</td></tr>
+        <tr><td>dict</td><td>O(1) avg</td><td>O(1) avg</td><td>O(1) avg</td><td>O(n)</td><td>Insertion-ordered since 3.7</td></tr>
+        <tr><td>set</td><td>O(1) avg</td><td>O(1) avg</td><td>O(1) avg</td><td>O(n)</td><td>Hash-based</td></tr>
+        <tr><td>deque</td><td>O(n)</td><td>O(1) both ends</td><td>O(1) both ends</td><td>O(n)</td><td>Doubly-linked block list</td></tr>
+        <tr><td>heapq</td><td>O(1) peek</td><td>O(log n)</td><td>O(log n)</td><td>O(n)</td><td>Min-heap on a list</td></tr>
+      </tbody>
+    </table>
+
+    <div class="q-grid">
+
+      <details class="q">
+        <summary><span class="pill easy">Easy</span> When to use <code class="inline">list</code> vs <code class="inline">tuple</code>?</summary>
+        <div class="q-body">
+          <p>Use a <b>tuple</b> when the collection's identity = its contents (records, return values, dict keys), or when the data shouldn't change. Use a <b>list</b> when the collection grows, shrinks, or gets sorted in place.</p>
+          <p>Performance: tuples are slightly smaller and faster to create — but don't over-optimize on that alone.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> How does a Python dict actually work?</summary>
+        <div class="q-body">
+          <p>CPython dicts are <b>open-addressed hash tables</b>. Since 3.6, they use a <b>compact, ordered layout</b>: a sparse array of indices points into a dense array of <code class="inline">(hash, key, value)</code> entries. That's why insertion order is preserved without extra cost.</p>
+          <p>Collisions are resolved with <b>perturbation probing</b> (not linear probing). Load factor stays under ~⅔; on overflow the table is rebuilt at the next power of 2.</p>
+          <p><b>For the interview:</b> mention amortized O(1), the worst-case O(n) under adversarial inputs (mitigated by hash randomization with <code class="inline">PYTHONHASHSEED</code> for strings/bytes), and that keys must be hashable + their hash stable for their lifetime in the dict.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> <code class="inline">collections</code> module — the four classes you should name without hesitating</summary>
+        <div class="q-body">
+          <ul>
+            <li><code class="inline">defaultdict(factory)</code> — auto-creates missing keys.</li>
+            <li><code class="inline">Counter</code> — multiset, with <code class="inline">.most_common(k)</code>, addition/subtraction, and elementwise min/max.</li>
+            <li><code class="inline">deque</code> — O(1) appendleft/popleft, <code class="inline">maxlen</code> for sliding windows.</li>
+            <li><code class="inline">ChainMap</code> — layered lookups (config defaults → env → CLI).</li>
+            <li>(<code class="inline">OrderedDict</code> is mostly historical; use plain dict, but its <code class="inline">move_to_end</code> is still useful — e.g. LRU caches.)</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Hard</span> Implement an LRU cache from scratch</summary>
+        <div class="q-body">
+          <p>The interview classic. The pattern: hash map for O(1) lookup + doubly-linked list for O(1) eviction. In Python you can fake it with <code class="inline">OrderedDict</code>:</p>
+<pre><code><span class="kw">from</span> collections <span class="kw">import</span> OrderedDict
+
+<span class="kw">class</span> <span class="fn">LRUCache</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, capacity: <span class="kw">int</span>):
+        self.cap = capacity
+        self.d = OrderedDict()
+
+    <span class="kw">def</span> <span class="fn">get</span>(self, key):
+        <span class="kw">if</span> key <span class="kw">not in</span> self.d: <span class="kw">return</span> -<span class="num">1</span>
+        self.d.move_to_end(key)
+        <span class="kw">return</span> self.d[key]
+
+    <span class="kw">def</span> <span class="fn">put</span>(self, key, value):
+        <span class="kw">if</span> key <span class="kw">in</span> self.d:
+            self.d.move_to_end(key)
+        self.d[key] = value
+        <span class="kw">if</span> <span class="fn">len</span>(self.d) > self.cap:
+            self.d.popitem(last=<span class="kw">False</span>)   <span class="com"># pop oldest</span></code></pre>
+          <p>If they want it "from real scratch", build a <code class="inline">Node(prev, next, key, value)</code> doubly-linked list plus a dict <code class="inline">key → Node</code>. Mention thread-safety and ask whether they want it (a lock around get/put, or use <code class="inline">functools.lru_cache</code> which is already thread-safe).</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Hard</span> Why don't sets preserve insertion order, but dicts do?</summary>
+        <div class="q-body">
+          <p>Dicts got the compact-ordered layout in 3.6 and the language guarantees order from 3.7. Sets weren't given that guarantee — they share the hash-table machinery but operate on a sparse array of (hash, key) only, and CPython hasn't paid the engineering cost to also make them compact-ordered. If you need ordered uniqueness, use <code class="inline">dict.fromkeys(seq)</code>.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Hard</span> heapq — implement top-K largest</summary>
+        <div class="q-body">
+<pre><code><span class="kw">import</span> heapq
+<span class="kw">def</span> <span class="fn">top_k</span>(stream, k):
+    h = []
+    <span class="kw">for</span> x <span class="kw">in</span> stream:
+        <span class="kw">if</span> <span class="fn">len</span>(h) < k:
+            heapq.heappush(h, x)
+        <span class="kw">elif</span> x > h[<span class="num">0</span>]:
+            heapq.heapreplace(h, x)
+    <span class="kw">return</span> <span class="fn">sorted</span>(h, reverse=<span class="kw">True</span>)</code></pre>
+          <p>Time O(n log k), space O(k). Note <code class="inline">heapq</code> is a <b>min-heap</b> — negate values or store tuples <code class="inline">(-priority, item)</code> for max-heap behavior.</p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: OOP -->
+<!-- ============================================================ -->
+<section class="topic" id="s3">
+  <div class="container">
+    <div class="section-num">Section 03</div>
+    <h2 class="section-title">OOP — beyond <em>"explain polymorphism"</em></h2>
+    <p class="section-desc">For a 7-year role they'll go straight past textbook definitions. Expect MRO, metaclasses, descriptors, dataclasses, ABCs and Protocols.</p>
+
+    <div class="q-grid">
+
+      <details class="q">
+        <summary><span class="pill easy">Easy</span> Four pillars — give a Python example, not a definition</summary>
+        <div class="q-body">
+          <ul>
+            <li><b>Encapsulation:</b> <code class="inline">_protected</code>, <code class="inline">__private</code> (name-mangled to <code class="inline">_Class__attr</code>), <code class="inline">@property</code>.</li>
+            <li><b>Inheritance:</b> <code class="inline">class Child(Parent):</code> — but prefer composition.</li>
+            <li><b>Polymorphism:</b> duck typing — "if it quacks, it's a duck." Two unrelated classes both implementing <code class="inline">__iter__</code> are interchangeable in <code class="inline">for</code> loops.</li>
+            <li><b>Abstraction:</b> <code class="inline">abc.ABC</code> or <code class="inline">typing.Protocol</code> for structural typing.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> Explain MRO and the C3 linearization</summary>
+        <div class="q-body">
+          <p>Method Resolution Order is the deterministic sequence Python walks when looking up an attribute on a class with multiple parents. CPython uses <b>C3 linearization</b>: it preserves (1) the order parents are declared and (2) each class's own MRO, and disallows ambiguity.</p>
+<pre><code><span class="kw">class</span> <span class="fn">A</span>: <span class="kw">pass</span>
+<span class="kw">class</span> <span class="fn">B</span>(A): <span class="kw">pass</span>
+<span class="kw">class</span> <span class="fn">C</span>(A): <span class="kw">pass</span>
+<span class="kw">class</span> <span class="fn">D</span>(B, C): <span class="kw">pass</span>
+
+D.__mro__   <span class="com"># (D, B, C, A, object)</span></code></pre>
+          <p>If C3 can't produce a consistent order, Python raises <code class="inline">TypeError</code> at class creation. <code class="inline">super()</code> walks the MRO, which is why "cooperative multiple inheritance" works only when every class in the chain calls <code class="inline">super().__init__()</code>.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> <code class="inline">@classmethod</code> vs <code class="inline">@staticmethod</code> — and when to actually use each</summary>
+        <div class="q-body">
+          <p><b>classmethod</b>: receives the class as <code class="inline">cls</code>. Use it for <b>alternative constructors</b>:</p>
+<pre><code><span class="kw">class</span> <span class="fn">Date</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, y, m, d): self.y, self.m, self.d = y, m, d
+    <span class="op">@classmethod</span>
+    <span class="kw">def</span> <span class="fn">from_iso</span>(<span class="kw">cls</span>, s):
+        y, m, d = <span class="fn">map</span>(<span class="kw">int</span>, s.split(<span class="str">"-"</span>))
+        <span class="kw">return</span> <span class="kw">cls</span>(y, m, d)   <span class="com"># cls so subclasses get the right type</span></code></pre>
+          <p><b>staticmethod</b>: no class, no instance — just a function that logically belongs in the class namespace. Use sparingly; usually a module-level function is fine.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> dataclass vs NamedTuple vs Pydantic</summary>
+        <div class="q-body">
+          <ul>
+            <li><b>NamedTuple</b>: immutable, tuple-compatible, lightweight, hashable. Good for return values and lookup keys.</li>
+            <li><b>@dataclass</b>: standard library; gives you <code class="inline">__init__</code>, <code class="inline">__repr__</code>, <code class="inline">__eq__</code>; mutable by default, or <code class="inline">frozen=True</code>; supports defaults via <code class="inline">field(default_factory=list)</code>.</li>
+            <li><b>Pydantic BaseModel</b>: runtime type validation, JSON (de)serialization, custom validators. The right tool for API boundaries, config, and untrusted input.</li>
+          </ul>
+<pre><code><span class="kw">from</span> dataclasses <span class="kw">import</span> dataclass, field
+<span class="op">@dataclass</span>(slots=<span class="kw">True</span>, frozen=<span class="kw">True</span>)
+<span class="kw">class</span> <span class="fn">User</span>:
+    id: <span class="kw">int</span>
+    name: <span class="kw">str</span>
+    tags: <span class="kw">list</span>[<span class="kw">str</span>] = field(default_factory=<span class="kw">list</span>)</code></pre>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Hard</span> Descriptors — what are they and where do you actually meet them?</summary>
+        <div class="q-body">
+          <p>A descriptor is any object that defines <code class="inline">__get__</code>, <code class="inline">__set__</code>, or <code class="inline">__delete__</code>. When you access an attribute on an instance, Python checks the class for a descriptor and calls its protocol methods.</p>
+          <p>You use descriptors every day without realizing: <code class="inline">@property</code>, <code class="inline">@classmethod</code>, <code class="inline">@staticmethod</code>, Django/SQLAlchemy ORM fields, <code class="inline">functools.cached_property</code>.</p>
+<pre><code><span class="kw">class</span> <span class="fn">PositiveInt</span>:
+    <span class="kw">def</span> <span class="fn">__set_name__</span>(self, owner, name): self._name = <span class="str">"_"</span> + name
+    <span class="kw">def</span> <span class="fn">__get__</span>(self, obj, objtype=<span class="kw">None</span>):
+        <span class="kw">return</span> <span class="fn">getattr</span>(obj, self._name)
+    <span class="kw">def</span> <span class="fn">__set__</span>(self, obj, value):
+        <span class="kw">if</span> value < <span class="num">0</span>: <span class="kw">raise</span> <span class="fn">ValueError</span>(<span class="str">"must be ≥ 0"</span>)
+        <span class="fn">setattr</span>(obj, self._name, value)
+
+<span class="kw">class</span> <span class="fn">Account</span>:
+    balance = PositiveInt()
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, b): self.balance = b</code></pre>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Hard</span> ABC vs Protocol — pick one</summary>
+        <div class="q-body">
+          <p><b>abc.ABC</b>: <em>nominal</em> typing — class has to explicitly inherit to count. Best when you want to enforce a contract and there's a real "is-a" relationship.</p>
+          <p><b>typing.Protocol</b>: <em>structural</em> typing — duck typing for the type checker. A class is "a Protocol" simply by implementing the methods. Best when you want to type third-party or unrelated classes that happen to share an interface.</p>
+<pre><code><span class="kw">from</span> typing <span class="kw">import</span> Protocol
+<span class="kw">class</span> <span class="fn">SupportsClose</span>(Protocol):
+    <span class="kw">def</span> <span class="fn">close</span>(self) -> <span class="kw">None</span>: ...
+
+<span class="kw">def</span> <span class="fn">shut</span>(x: SupportsClose) -> <span class="kw">None</span>:
+    x.close()   <span class="com"># works on files, sockets, your own classes — no inheritance needed</span></code></pre>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill xhard">Senior</span> Metaclasses — when have you actually used one?</summary>
+        <div class="q-body">
+          <p>A metaclass is the class of a class. <code class="inline">type</code> is the default. Custom metaclasses let you intercept class creation — modify attributes, register subclasses, enforce naming, etc.</p>
+          <p><b>The honest senior answer:</b> "Rarely. 9 times out of 10, <code class="inline">__init_subclass__</code> or class decorators are simpler and sufficient. Real metaclass cases I've seen: ORM field collection (Django <code class="inline">Model</code>, SQLAlchemy declarative base), Pydantic v1, abstract base class machinery."</p>
+<pre><code><span class="kw">class</span> <span class="fn">Registry</span>(<span class="kw">type</span>):
+    registry = {}
+    <span class="kw">def</span> <span class="fn">__new__</span>(mcs, name, bases, ns):
+        cls = <span class="fn">super</span>().__new__(mcs, name, bases, ns)
+        Registry.registry[name] = cls
+        <span class="kw">return</span> cls
+
+<span class="kw">class</span> <span class="fn">Plugin</span>(metaclass=Registry): <span class="kw">pass</span>
+<span class="kw">class</span> <span class="fn">Auth</span>(Plugin): <span class="kw">pass</span>   <span class="com"># auto-registered</span></code></pre>
+          <p>Bring up <b>"prefer __init_subclass__"</b> — it's the modern, simpler answer for subclass tracking.</p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: FUNCTIONAL & ITERATORS -->
+<!-- ============================================================ -->
+<section class="topic" id="s4">
+  <div class="container">
+    <div class="section-num">Section 04</div>
+    <h2 class="section-title">Iterators, generators, functional bits</h2>
+    <p class="section-desc">If someone asks "what's the difference between an iterable and an iterator", be ready to draw the protocol on the whiteboard.</p>
+
+    <div class="q-grid">
+
+      <details class="q">
+        <summary><span class="pill easy">Easy</span> Iterable vs iterator vs generator</summary>
+        <div class="q-body">
+          <ul>
+            <li><b>Iterable:</b> any object with <code class="inline">__iter__</code> returning an iterator. Lists, tuples, dicts, files, strings.</li>
+            <li><b>Iterator:</b> has <code class="inline">__next__</code> AND <code class="inline">__iter__</code> (returning self). Single-pass — once exhausted, that's it.</li>
+            <li><b>Generator:</b> a function with <code class="inline">yield</code>. Implements the iterator protocol automatically and lazily produces values.</li>
+          </ul>
+<pre><code><span class="kw">def</span> <span class="fn">fib</span>():
+    a, b = <span class="num">0</span>, <span class="num">1</span>
+    <span class="kw">while</span> <span class="kw">True</span>:
+        <span class="kw">yield</span> a
+        a, b = b, a + b
+
+g = fib()
+[<span class="fn">next</span>(g) <span class="kw">for</span> _ <span class="kw">in</span> <span class="fn">range</span>(<span class="num">7</span>)]   <span class="com"># [0, 1, 1, 2, 3, 5, 8]</span></code></pre>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> When would you choose a generator over returning a list?</summary>
+        <div class="q-body">
+          <ul>
+            <li>The data is huge or infinite (log files, sensor streams).</li>
+            <li>The consumer may stop early — don't compute what you don't need.</li>
+            <li>You want to pipeline transformations without intermediate lists.</li>
+            <li>Memory is constrained.</li>
+          </ul>
+          <p><b>Trade-off:</b> generators are single-pass and not random-access — no <code class="inline">len()</code>, no slicing. If the consumer needs the data twice, materialize once into a list.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> What's <code class="inline">yield from</code> for?</summary>
+        <div class="q-body">
+          <p>Delegates iteration to a sub-generator and (importantly) passes <code class="inline">send()</code>, <code class="inline">throw()</code>, and the final return value through. The pre-asyncio basis for coroutines.</p>
+<pre><code><span class="kw">def</span> <span class="fn">flatten</span>(nested):
+    <span class="kw">for</span> item <span class="kw">in</span> nested:
+        <span class="kw">if</span> <span class="fn">isinstance</span>(item, <span class="kw">list</span>):
+            <span class="kw">yield from</span> flatten(item)
+        <span class="kw">else</span>:
+            <span class="kw">yield</span> item</code></pre>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> <code class="inline">map</code>, <code class="inline">filter</code>, <code class="inline">reduce</code> vs comprehensions</summary>
+        <div class="q-body">
+          <p>Comprehensions are almost always more Pythonic and faster (no function-call overhead per element). Reach for <code class="inline">map/filter</code> only when you already have a named function — e.g. <code class="inline">map(int, tokens)</code>.</p>
+          <p><code class="inline">reduce</code> lives in <code class="inline">functools</code>. Use it for non-trivial accumulators (e.g. multiplying everything) but for sums, use <code class="inline">sum()</code>; for min/max, use the built-ins.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Hard</span> Five <code class="inline">itertools</code> functions you'd reach for</summary>
+        <div class="q-body">
+          <ul>
+            <li><code class="inline">chain(*iters)</code> — concat without copying.</li>
+            <li><code class="inline">groupby(iter, key)</code> — like SQL GROUP BY but only on <b>contiguous</b> runs; sort first.</li>
+            <li><code class="inline">islice(iter, start, stop, step)</code> — slice a generator.</li>
+            <li><code class="inline">product / permutations / combinations</code> — combinatorics without writing loops.</li>
+            <li><code class="inline">accumulate(iter, func)</code> — running totals.</li>
+            <li><code class="inline">tee(iter, n)</code> — fan out an iterator into n independent ones (careful: it buffers).</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Hard</span> Closure pitfall — what does this print?</summary>
+        <div class="q-body">
+<pre><code>fns = [<span class="kw">lambda</span>: i <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">3</span>)]
+<span class="fn">print</span>([f() <span class="kw">for</span> f <span class="kw">in</span> fns])</code></pre>
+          <p>Output: <code class="inline">[2, 2, 2]</code>. Each lambda captures the variable <code class="inline">i</code> by reference; by the time you call them, <code class="inline">i == 2</code>.</p>
+          <p>Fix: <code class="inline">[lambda i=i: i for i in range(3)]</code> — default arguments freeze the value at definition time.</p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: DECORATORS & CONTEXT MANAGERS -->
+<!-- ============================================================ -->
+<section class="topic" id="s5">
+  <div class="container">
+    <div class="section-num">Section 05</div>
+    <h2 class="section-title">Decorators, context managers, the dunder layer</h2>
+    <p class="section-desc">Senior code reviews are full of "wrap this in a decorator" and "use a context manager for cleanup." Be fluent.</p>
+
+    <div class="q-grid">
+
+      <details class="q">
+        <summary><span class="pill easy">Easy</span> Write a timing decorator</summary>
+        <div class="q-body">
+<pre><code><span class="kw">import</span> functools, time
+
+<span class="kw">def</span> <span class="fn">timed</span>(fn):
+    <span class="op">@functools.wraps</span>(fn)
+    <span class="kw">def</span> <span class="fn">wrapper</span>(*args, **kwargs):
+        t0 = time.perf_counter()
+        result = fn(*args, **kwargs)
+        <span class="fn">print</span>(<span class="str">f"</span>{fn.__name__}<span class="str"> took </span>{time.perf_counter()-t0:<span class="str">.4f</span>}<span class="str">s"</span>)
+        <span class="kw">return</span> result
+    <span class="kw">return</span> wrapper</code></pre>
+          <p>The <code class="inline">@functools.wraps</code> bit matters — it preserves the original function's name, docstring, and signature for debuggers and introspection.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> Decorator with arguments</summary>
+        <div class="q-body">
+<pre><code><span class="kw">def</span> <span class="fn">retry</span>(times=<span class="num">3</span>, exceptions=(<span class="fn">Exception</span>,)):
+    <span class="kw">def</span> <span class="fn">deco</span>(fn):
+        <span class="op">@functools.wraps</span>(fn)
+        <span class="kw">def</span> <span class="fn">wrapper</span>(*a, **kw):
+            <span class="kw">for</span> attempt <span class="kw">in</span> <span class="fn">range</span>(times):
+                <span class="kw">try</span>:    <span class="kw">return</span> fn(*a, **kw)
+                <span class="kw">except</span> exceptions:
+                    <span class="kw">if</span> attempt == times - <span class="num">1</span>: <span class="kw">raise</span>
+        <span class="kw">return</span> wrapper
+    <span class="kw">return</span> deco
+
+<span class="op">@retry</span>(times=<span class="num">5</span>, exceptions=(<span class="fn">ConnectionError</span>,))
+<span class="kw">def</span> <span class="fn">fetch</span>(url): ...</code></pre>
+          <p>Three layers: factory → real decorator → wrapper. Worth practicing until you can write it in 90 seconds.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> Two ways to write a context manager</summary>
+        <div class="q-body">
+<pre><code><span class="com"># 1. Class-based</span>
+<span class="kw">class</span> <span class="fn">Timer</span>:
+    <span class="kw">def</span> <span class="fn">__enter__</span>(self): self.t0 = time.perf_counter(); <span class="kw">return</span> self
+    <span class="kw">def</span> <span class="fn">__exit__</span>(self, exc_type, exc, tb):
+        self.dt = time.perf_counter() - self.t0
+        <span class="kw">return</span> <span class="kw">False</span>   <span class="com"># don't suppress exceptions</span>
+
+<span class="com"># 2. contextlib.contextmanager</span>
+<span class="kw">from</span> contextlib <span class="kw">import</span> contextmanager
+<span class="op">@contextmanager</span>
+<span class="kw">def</span> <span class="fn">timer</span>():
+    t0 = time.perf_counter()
+    <span class="kw">try</span>:    <span class="kw">yield</span>
+    <span class="kw">finally</span>: <span class="fn">print</span>(time.perf_counter() - t0)</code></pre>
+          <p><b>Returning True from __exit__ suppresses the exception</b> — useful for "only-on-this-error" handlers but easy to misuse. Default to <code class="inline">return False</code> or no return.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Hard</span> <code class="inline">contextlib</code> tools every senior should know</summary>
+        <div class="q-body">
+          <ul>
+            <li><code class="inline">@contextmanager</code> — generator-based.</li>
+            <li><code class="inline">ExitStack</code> — manage a dynamic number of context managers (e.g. opening N files).</li>
+            <li><code class="inline">suppress(*exc)</code> — replace <code class="inline">try/except: pass</code>.</li>
+            <li><code class="inline">closing(thing)</code> — call <code class="inline">.close()</code> on exit.</li>
+            <li><code class="inline">redirect_stdout / redirect_stderr</code> — handy in tests.</li>
+            <li><code class="inline">nullcontext</code> — placeholder when a CM is conditional.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Hard</span> Useful dunder methods grouped by purpose</summary>
+        <div class="q-body">
+          <table>
+            <thead><tr><th>Purpose</th><th>Methods</th></tr></thead>
+            <tbody>
+              <tr><td>Object lifecycle</td><td>__new__, __init__, __del__</td></tr>
+              <tr><td>Representation</td><td>__repr__, __str__, __format__</td></tr>
+              <tr><td>Comparison</td><td>__eq__, __lt__, __hash__</td></tr>
+              <tr><td>Container protocol</td><td>__len__, __getitem__, __setitem__, __contains__, __iter__</td></tr>
+              <tr><td>Callable</td><td>__call__</td></tr>
+              <tr><td>Context manager</td><td>__enter__, __exit__</td></tr>
+              <tr><td>Numeric ops</td><td>__add__, __sub__, __mul__, __radd__ (reflected)</td></tr>
+              <tr><td>Async</td><td>__aiter__, __anext__, __aenter__, __aexit__</td></tr>
+            </tbody>
+          </table>
+          <div class="gotcha"><b>Pair rule:</b> if you override <code class="inline">__eq__</code> you must override <code class="inline">__hash__</code> (or set <code class="inline">__hash__ = None</code> to make unhashable). Two equal objects must hash equal.</div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: CONCURRENCY -->
+<!-- ============================================================ -->
+<section class="topic" id="s6">
+  <div class="container">
+    <div class="section-num">Section 06</div>
+    <h2 class="section-title">Concurrency — threads, processes, async</h2>
+    <p class="section-desc">Almost guaranteed at 7 YOE. You'll be asked: which model when, what the GIL does to each, and how to design a worker pool.</p>
+
+    <div class="q-grid">
+
+      <details class="q">
+        <summary><span class="pill easy">Easy</span> Threads vs processes vs asyncio — choose</summary>
+        <div class="q-body">
+          <table>
+            <thead><tr><th>Model</th><th>Best for</th><th>Cost</th><th>Sharing</th></tr></thead>
+            <tbody>
+              <tr><td>threading</td><td>I/O-bound, many waiters</td><td>~MBs/thread, OS context switch</td><td>shared memory; need locks</td></tr>
+              <tr><td>multiprocessing</td><td>CPU-bound, parallelism</td><td>fork/spawn cost, MBs RAM/proc</td><td>IPC: pickle, queues, shared mem</td></tr>
+              <tr><td>asyncio</td><td>Massive concurrent I/O (10k+ conns)</td><td>~KBs/task</td><td>single thread, no locks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> Show a thread pool and a process pool</summary>
+        <div class="q-body">
+<pre><code><span class="kw">from</span> concurrent.futures <span class="kw">import</span> ThreadPoolExecutor, ProcessPoolExecutor
+<span class="kw">import</span> requests
+
+urls = [...]
+<span class="kw">with</span> ThreadPoolExecutor(max_workers=<span class="num">20</span>) <span class="kw">as</span> ex:
+    pages = <span class="fn">list</span>(ex.map(requests.get, urls))    <span class="com"># I/O-bound → threads</span>
+
+<span class="kw">with</span> ProcessPoolExecutor() <span class="kw">as</span> ex:
+    results = <span class="fn">list</span>(ex.map(crunch, big_inputs))   <span class="com"># CPU-bound → processes</span></code></pre>
+          <p>Prefer <code class="inline">concurrent.futures</code> over raw <code class="inline">Thread</code>/<code class="inline">Process</code> — same API for both, returns Futures with timeouts and cancellation.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> async/await — the mental model</summary>
+        <div class="q-body">
+          <p>An async function returns a <b>coroutine object</b> when called. The coroutine doesn't run until awaited or scheduled in an event loop. The loop runs one coroutine at a time on a single thread; at every <code class="inline">await</code> it can switch to another ready coroutine.</p>
+<pre><code><span class="kw">import</span> asyncio, aiohttp
+
+<span class="kw">async def</span> <span class="fn">fetch</span>(session, url):
+    <span class="kw">async with</span> session.get(url) <span class="kw">as</span> r:
+        <span class="kw">return</span> <span class="kw">await</span> r.text()
+
+<span class="kw">async def</span> <span class="fn">main</span>(urls):
+    <span class="kw">async with</span> aiohttp.ClientSession() <span class="kw">as</span> s:
+        <span class="kw">async with</span> asyncio.TaskGroup() <span class="kw">as</span> tg:    <span class="com"># 3.11+</span>
+            tasks = [tg.create_task(fetch(s, u)) <span class="kw">for</span> u <span class="kw">in</span> urls]
+    <span class="kw">return</span> [t.result() <span class="kw">for</span> t <span class="kw">in</span> tasks]
+
+asyncio.run(main(urls))</code></pre>
+          <p><b>The cardinal rule:</b> never call blocking code inside a coroutine. If you must, wrap with <code class="inline">await asyncio.to_thread(blocking_fn, ...)</code>.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Hard</span> Producer-consumer with bounded queue</summary>
+        <div class="q-body">
+<pre><code><span class="kw">import</span> asyncio, random
+
+<span class="kw">async def</span> <span class="fn">producer</span>(q, n):
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(n):
+        <span class="kw">await</span> q.put(i)
+        <span class="kw">await</span> asyncio.sleep(random.random() * <span class="num">0.01</span>)
+    <span class="kw">await</span> q.put(<span class="kw">None</span>)   <span class="com"># sentinel</span>
+
+<span class="kw">async def</span> <span class="fn">consumer</span>(q):
+    <span class="kw">while</span> <span class="kw">True</span>:
+        item = <span class="kw">await</span> q.get()
+        <span class="kw">if</span> item <span class="kw">is</span> <span class="kw">None</span>: <span class="kw">break</span>
+        <span class="fn">handle</span>(item)
+        q.task_done()
+
+<span class="kw">async def</span> <span class="fn">main</span>():
+    q = asyncio.Queue(maxsize=<span class="num">100</span>)
+    <span class="kw">await</span> asyncio.gather(producer(q, <span class="num">1000</span>), consumer(q))</code></pre>
+          <p>The <code class="inline">maxsize</code> applies <b>backpressure</b> — producers block when the queue is full. Talk about that explicitly; senior interviewers love hearing the word "backpressure".</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Hard</span> What's deadlock and how do you avoid it?</summary>
+        <div class="q-body">
+          <p>Deadlock: ≥ 2 tasks each hold a resource the other needs, none release. The Dining Philosophers problem.</p>
+          <p><b>Avoidance strategies:</b></p>
+          <ul>
+            <li><b>Lock ordering</b> — always acquire locks in a fixed global order.</li>
+            <li><b>Timeouts</b> — <code class="inline">lock.acquire(timeout=N)</code>, then back off.</li>
+            <li><b>Lock-free designs</b> — message passing via queues instead of shared mutable state.</li>
+            <li><b>Use higher-level primitives</b> — <code class="inline">RLock</code>, <code class="inline">Semaphore</code>, <code class="inline">Event</code>, <code class="inline">Condition</code> when they fit.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill xhard">Senior</span> Compare <code class="inline">multiprocessing.Queue</code> vs <code class="inline">asyncio.Queue</code> vs <code class="inline">queue.Queue</code></summary>
+        <div class="q-body">
+          <ul>
+            <li><code class="inline">queue.Queue</code>: thread-safe, blocking. Use between threads in the same process.</li>
+            <li><code class="inline">multiprocessing.Queue</code>: cross-process, backed by a pipe + lock + helper thread; objects are pickled.</li>
+            <li><code class="inline">asyncio.Queue</code>: NOT thread-safe, single-event-loop only. Methods are coroutines (<code class="inline">await q.get()</code>).</li>
+          </ul>
+          <div class="gotcha"><b>Trap:</b> putting an <code class="inline">asyncio.Queue</code> across threads silently breaks. To bridge threads ↔ async, use <code class="inline">loop.call_soon_threadsafe</code> or <code class="inline">asyncio.run_coroutine_threadsafe</code>.</div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: MEMORY & PERF -->
+<!-- ============================================================ -->
+<section class="topic" id="s7">
+  <div class="container">
+    <div class="section-num">Section 07</div>
+    <h2 class="section-title">Memory, GC, performance</h2>
+    <p class="section-desc">"My script is slow / leaking" is a question, not a story. Be ready to talk about how you'd actually debug it.</p>
+
+    <div class="q-grid">
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> How does Python's garbage collector work?</summary>
+        <div class="q-body">
+          <p><b>Two mechanisms:</b></p>
+          <ol>
+            <li><b>Reference counting</b> (primary). Every object has a refcount. When it hits 0, the object is freed immediately and its references are decremented.</li>
+            <li><b>Generational cyclic GC</b> (<code class="inline">gc</code> module). Refcounting can't free reference cycles (<code class="inline">a.ref = b; b.ref = a</code>). A separate collector walks objects in three generations (young / middle / old), promoting survivors, and breaks cycles.</li>
+          </ol>
+          <p>You can disable the cyclic GC with <code class="inline">gc.disable()</code> in latency-sensitive paths (e.g. Instagram famously did this in early Django days), then re-enable.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> Tools you'd use to find a memory leak</summary>
+        <div class="q-body">
+          <ul>
+            <li><code class="inline">tracemalloc</code> (stdlib) — snapshot diff to find growing allocations.</li>
+            <li><code class="inline">objgraph</code> — visualize ref graphs, find what's keeping an object alive.</li>
+            <li><code class="inline">memray</code> (Bloomberg) — production-grade memory profiler.</li>
+            <li><code class="inline">guppy3</code> / <code class="inline">pympler</code> — heap summaries.</li>
+            <li><code class="inline">resource.getrusage</code> or <code class="inline">/proc/self/status</code> on Linux for RSS over time.</li>
+          </ul>
+          <p>Common causes: globals/caches without bounds, circular references with <code class="inline">__del__</code>, holding references to large objects inside closures, module-level singletons.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Hard</span> Profile CPU — what's your workflow?</summary>
+        <div class="q-body">
+          <ol>
+            <li><b>Measure</b>: <code class="inline">cProfile</code> + <code class="inline">snakeviz</code> for a visual flame graph, or <code class="inline">py-spy</code> on production processes (sampling, no instrumentation).</li>
+            <li><b>Find the hot path.</b> Don't optimize without numbers.</li>
+            <li><b>Pick the right fix</b>: better algorithm > better data structure > vectorize with NumPy > caching > rewrite in Cython / Rust (pyo3) / C extension.</li>
+            <li><b>Verify</b> with the same profiler, on the same workload.</li>
+          </ol>
+          <div class="callout">
+            <h4>Sample answer framing</h4>
+            <p>"My default is <code class="inline">py-spy record</code> against the running service — it's sampling-based so production overhead is &lt;5%, and it produces flame graphs I can read in 30 seconds. For local hot loops I'll switch to <code class="inline">line_profiler</code> for per-line timing."</p>
+          </div>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Hard</span> Make this slow function fast</summary>
+        <div class="q-body">
+<pre><code><span class="com"># Before: O(n²)</span>
+<span class="kw">def</span> <span class="fn">find_duplicates</span>(items):
+    dups = []
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="fn">len</span>(items)):
+        <span class="kw">for</span> j <span class="kw">in</span> <span class="fn">range</span>(i+<span class="num">1</span>, <span class="fn">len</span>(items)):
+            <span class="kw">if</span> items[i] == items[j] <span class="kw">and</span> items[i] <span class="kw">not in</span> dups:
+                dups.append(items[i])
+    <span class="kw">return</span> dups
+
+<span class="com"># After: O(n)</span>
+<span class="kw">from</span> collections <span class="kw">import</span> Counter
+<span class="kw">def</span> <span class="fn">find_duplicates</span>(items):
+    <span class="kw">return</span> [k <span class="kw">for</span> k, v <span class="kw">in</span> Counter(items).items() <span class="kw">if</span> v > <span class="num">1</span>]</code></pre>
+          <p>This is a common screening question. The first version has three O(n) costs hiding: the inner loop, the <code class="inline">in dups</code> check (list membership), and the worst case of repeated duplicates.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill xhard">Senior</span> When would you reach outside Python for performance?</summary>
+        <div class="q-body">
+          <ul>
+            <li><b>NumPy / Pandas / Polars</b> — vectorize numerical work. 10×–100× wins for free.</li>
+            <li><b>Cython / mypyc</b> — type-annotate hot Python, compile to C.</li>
+            <li><b>Numba</b> — JIT-compile numerical functions.</li>
+            <li><b>PyO3 / maturin</b> — Rust extension. Increasingly common in 2026 (ruff, pydantic-core, polars).</li>
+            <li><b>ctypes / cffi</b> — call existing C libraries.</li>
+          </ul>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: TESTING -->
+<!-- ============================================================ -->
+<section class="topic" id="s8">
+  <div class="container">
+    <div class="section-num">Section 08</div>
+    <h2 class="section-title">Testing, packaging, tooling</h2>
+
+    <div class="q-grid">
+
+      <details class="q">
+        <summary><span class="pill easy">Easy</span> pytest features that beat unittest</summary>
+        <div class="q-body">
+          <ul>
+            <li>Plain <code class="inline">assert</code> with rich introspection.</li>
+            <li><b>Fixtures</b> (dependency injection for tests) with scope: function/class/module/session.</li>
+            <li><b>Parametrize</b> for table-driven tests.</li>
+            <li>Plugin ecosystem: <code class="inline">pytest-xdist</code> (parallel), <code class="inline">pytest-cov</code>, <code class="inline">pytest-asyncio</code>.</li>
+          </ul>
+<pre><code><span class="op">@pytest.fixture</span>
+<span class="kw">def</span> <span class="fn">db</span>():
+    conn = <span class="fn">connect</span>()
+    <span class="kw">yield</span> conn
+    conn.close()
+
+<span class="op">@pytest.mark.parametrize</span>(<span class="str">"a,b,expected"</span>, [(<span class="num">1</span>,<span class="num">1</span>,<span class="num">2</span>), (<span class="num">2</span>,<span class="num">3</span>,<span class="num">5</span>)])
+<span class="kw">def</span> <span class="fn">test_add</span>(a, b, expected):
+    <span class="kw">assert</span> add(a, b) == expected</code></pre>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> Mock vs patch vs MagicMock — talk through it</summary>
+        <div class="q-body">
+          <ul>
+            <li><code class="inline">Mock</code> — bare stand-in object; attributes/calls auto-vivify.</li>
+            <li><code class="inline">MagicMock</code> — Mock with all magic methods pre-configured (works as a context manager, iterator, etc.).</li>
+            <li><code class="inline">patch</code> — temporarily replace an object at a path with a Mock during a test. <b>Always patch where the name is looked up</b>, not where it's defined.</li>
+          </ul>
+<pre><code><span class="com"># If module b does: from a import api</span>
+<span class="com"># Then patch b.api, not a.api</span>
+<span class="kw">with</span> <span class="fn">patch</span>(<span class="str">"b.api"</span>) <span class="kw">as</span> m:
+    m.return_value = {<span class="str">"ok"</span>: <span class="kw">True</span>}
+    <span class="kw">assert</span> b.do_thing() == <span class="str">"ok"</span></code></pre>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> What does "good test pyramid" look like for a Python service?</summary>
+        <div class="q-body">
+          <ul>
+            <li>Lots of <b>unit tests</b> — fast (&lt;1ms each), no I/O, mock the boundaries.</li>
+            <li>Fewer <b>integration tests</b> — actual DB (testcontainers/pytest-postgresql), actual Redis, real HTTP routes.</li>
+            <li>A small number of <b>end-to-end tests</b> — full stack, real network. Slow but high-confidence.</li>
+            <li>Plus: <b>property-based tests</b> via <code class="inline">hypothesis</code> for invariants; <b>contract tests</b> for service boundaries.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Hard</span> 2026 tooling stack you'd set up day 1</summary>
+        <div class="q-body">
+          <ul>
+            <li><b>Package/env</b>: <code class="inline">uv</code> (Astral) — fast resolver, replaces pip + virtualenv + pip-tools, has gone mainstream. <code class="inline">poetry</code> still common.</li>
+            <li><b>Lint/format</b>: <code class="inline">ruff</code> — fast, replaces flake8, isort, much of pylint, and (with <code class="inline">ruff format</code>) Black.</li>
+            <li><b>Types</b>: <code class="inline">mypy</code> or <code class="inline">pyright</code>; <code class="inline">ty</code> (Astral) is newer.</li>
+            <li><b>Tests</b>: <code class="inline">pytest</code> + <code class="inline">pytest-cov</code> + <code class="inline">hypothesis</code>.</li>
+            <li><b>Pre-commit</b>: <code class="inline">pre-commit</code> framework wiring all of the above.</li>
+            <li><b>Dependency security</b>: <code class="inline">pip-audit</code> or Dependabot/Renovate.</li>
+            <li><b>Build/publish</b>: <code class="inline">hatch</code> or <code class="inline">uv build</code>.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Hard</span> Walk through <code class="inline">pyproject.toml</code></summary>
+        <div class="q-body">
+<pre><code>[<span class="fn">project</span>]
+name = <span class="str">"my-svc"</span>
+version = <span class="str">"0.1.0"</span>
+requires-python = <span class="str">">=3.12"</span>
+dependencies = [<span class="str">"fastapi&gt;=0.110"</span>, <span class="str">"pydantic&gt;=2"</span>]
+
+[<span class="fn">project.optional-dependencies</span>]
+dev = [<span class="str">"pytest"</span>, <span class="str">"ruff"</span>, <span class="str">"mypy"</span>]
+
+[<span class="fn">build-system</span>]
+requires = [<span class="str">"hatchling"</span>]
+build-backend = <span class="str">"hatchling.build"</span>
+
+[<span class="fn">tool.ruff</span>]
+line-length = <span class="num">100</span>
+select = [<span class="str">"E"</span>, <span class="str">"F"</span>, <span class="str">"I"</span>, <span class="str">"B"</span>, <span class="str">"UP"</span>]</code></pre>
+          <p>Mention PEP 517/518 (build-system table) and PEP 621 ([project] table). It's the single source of truth that replaced <code class="inline">setup.py</code>, <code class="inline">setup.cfg</code>, and <code class="inline">requirements.txt</code>.</p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: WEB FRAMEWORKS -->
+<!-- ============================================================ -->
+<section class="topic" id="s9">
+  <div class="container">
+    <div class="section-num">Section 09</div>
+    <h2 class="section-title">Django · Flask · FastAPI</h2>
+    <p class="section-desc">If the job description names a framework, go deep on that one. If not, know FastAPI well and Django at a working level — that combo covers most 2026 listings.</p>
+
+    <div class="q-grid">
+
+      <details class="q">
+        <summary><span class="pill easy">Easy</span> Django vs Flask vs FastAPI — one-line each</summary>
+        <div class="q-body">
+          <ul>
+            <li><b>Django</b>: batteries-included monolith (ORM, admin, auth, templates). Best for content sites and large team apps.</li>
+            <li><b>Flask</b>: minimal WSGI micro-framework. Pick your own batteries. Great for small services and prototypes.</li>
+            <li><b>FastAPI</b>: ASGI, async-first, Pydantic-based request validation, auto OpenAPI/Swagger. The current default for new Python APIs.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> WSGI vs ASGI — what's the actual difference?</summary>
+        <div class="q-body">
+          <p><b>WSGI</b>: synchronous, request → response, one call per request. Servers: gunicorn, uWSGI. Used by Django (until 3.x), Flask.</p>
+          <p><b>ASGI</b>: async, supports long-lived connections (WebSockets, SSE, HTTP/2). Servers: uvicorn, hypercorn, daphne. Used by FastAPI, Starlette, modern Django.</p>
+          <p>For a senior follow-up: "ASGI is a superset — you can wrap a WSGI app in an ASGI server with adapters like <code class="inline">a2wsgi</code>, but the inner app still blocks the event loop."</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> Django request lifecycle</summary>
+        <div class="q-body">
+          <ol>
+            <li>WSGI/ASGI server hands raw request to Django <code class="inline">WSGIHandler</code>.</li>
+            <li>Django constructs a <code class="inline">HttpRequest</code>.</li>
+            <li>Each middleware's <code class="inline">__call__</code> / <code class="inline">process_request</code> runs.</li>
+            <li>URL resolver matches the path → view.</li>
+            <li>View runs (often via <code class="inline">@login_required</code>, <code class="inline">@require_POST</code>, etc.).</li>
+            <li>ORM hits the DB, template renders, response object created.</li>
+            <li>Middlewares unwind (in reverse) with <code class="inline">process_response</code>.</li>
+            <li>Response goes back through the server to the client.</li>
+          </ol>
+          <p>Useful framing for "where would you add request-id tracing?" → middleware.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Hard</span> FastAPI dependency injection — design walkthrough</summary>
+        <div class="q-body">
+<pre><code><span class="kw">from</span> fastapi <span class="kw">import</span> Depends, FastAPI, HTTPException
+<span class="kw">from</span> sqlalchemy.orm <span class="kw">import</span> Session
+
+app = FastAPI()
+
+<span class="kw">def</span> <span class="fn">get_db</span>():
+    db = SessionLocal()
+    <span class="kw">try</span>: <span class="kw">yield</span> db
+    <span class="kw">finally</span>: db.close()
+
+<span class="kw">def</span> <span class="fn">current_user</span>(token: <span class="kw">str</span> = Depends(oauth2_scheme),
+                 db: Session = Depends(get_db)):
+    user = db.query(User).filter_by(token=token).first()
+    <span class="kw">if</span> <span class="kw">not</span> user: <span class="kw">raise</span> <span class="fn">HTTPException</span>(<span class="num">401</span>)
+    <span class="kw">return</span> user
+
+<span class="op">@app.get</span>(<span class="str">"/me"</span>)
+<span class="kw">def</span> <span class="fn">me</span>(user: User = Depends(current_user)):
+    <span class="kw">return</span> user</code></pre>
+          <p>Dependencies are cached per request, can be sync or async, and form a graph that FastAPI resolves before calling the route. Senior-level talking points: testability (override with <code class="inline">app.dependency_overrides</code>), composition, request-scoped state.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Hard</span> Authentication patterns — JWT vs session</summary>
+        <div class="q-body">
+          <ul>
+            <li><b>Session</b>: cookie + server-side store. Stateful, easy to revoke, requires sticky/shared storage. Best for first-party web apps.</li>
+            <li><b>JWT</b>: signed token; verified statelessly. Easy to scale horizontally, hard to revoke before expiry (need a blocklist). Use short-lived access tokens + refresh tokens.</li>
+            <li><b>OAuth2 + OIDC</b>: standard for third-party auth (Google, Microsoft); FastAPI has built-in helpers.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill xhard">Senior</span> Scaling a Django app to handle 10× traffic</summary>
+        <div class="q-body">
+          <p>Walk through layered options:</p>
+          <ol>
+            <li><b>Measure first</b>: APM (Datadog, Sentry, NewRelic, OTel) to find the actual bottleneck.</li>
+            <li><b>DB</b>: add indexes, fix N+1 queries (<code class="inline">select_related</code> / <code class="inline">prefetch_related</code>), connection pooling (pgbouncer), read replicas.</li>
+            <li><b>Caching</b>: Redis for query cache, fragment cache, session cache.</li>
+            <li><b>Async work</b>: push slow tasks to Celery/RQ/Dramatiq workers.</li>
+            <li><b>Horizontal scaling</b>: multiple gunicorn instances behind a load balancer; stateless app servers.</li>
+            <li><b>Static/media</b>: CDN (CloudFront, Cloudflare) + S3.</li>
+            <li><b>Profile hot Python paths</b>; consider rewriting in async views or microservice.</li>
+          </ol>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: DATABASES & ORM -->
+<!-- ============================================================ -->
+<section class="topic" id="s10">
+  <div class="container">
+    <div class="section-num">Section 10</div>
+    <h2 class="section-title">Databases, ORMs, the N+1 fight</h2>
+
+    <div class="q-grid">
+
+      <details class="q">
+        <summary><span class="pill easy">Easy</span> What's an N+1 query?</summary>
+        <div class="q-body">
+          <p>You run 1 query to fetch N parent rows, then 1 more query per row to fetch their relations — 1 + N queries instead of 1 or 2.</p>
+<pre><code><span class="com"># Bad — 1 + N queries</span>
+<span class="kw">for</span> author <span class="kw">in</span> Author.objects.all():
+    <span class="fn">print</span>(author.name, author.books.<span class="fn">count</span>())   <span class="com"># SQL per author</span>
+
+<span class="com"># Good — 2 queries</span>
+<span class="kw">for</span> author <span class="kw">in</span> Author.objects.prefetch_related(<span class="str">"books"</span>):
+    <span class="fn">print</span>(author.name, <span class="fn">len</span>(author.books.<span class="fn">all</span>()))</code></pre>
+          <p>Tools to detect: <code class="inline">django-debug-toolbar</code>, <code class="inline">nplusone</code>, SQLAlchemy event listeners that count queries per request.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> select_related vs prefetch_related</summary>
+        <div class="q-body">
+          <ul>
+            <li><b>select_related</b>: SQL JOIN, single query. For FK and OneToOne (forward).</li>
+            <li><b>prefetch_related</b>: separate query, joined in Python. For ManyToMany and reverse FK.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Medium</span> SQLAlchemy Core vs ORM</summary>
+        <div class="q-body">
+          <p><b>Core</b>: expression language built on the Engine — write SQL with Python objects, get back rows. Lighter weight; full SQL control.</p>
+          <p><b>ORM</b>: built on Core. Adds identity map, unit of work, relationships, lazy loading. SQLAlchemy 2.x is async-capable and has a unified select() API.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Hard</span> Transactions — explain isolation levels</summary>
+        <div class="q-body">
+          <table>
+            <thead><tr><th>Level</th><th>Dirty read</th><th>Non-repeatable read</th><th>Phantom read</th></tr></thead>
+            <tbody>
+              <tr><td>Read Uncommitted</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+              <tr><td>Read Committed (PG default)</td><td>—</td><td>Yes</td><td>Yes</td></tr>
+              <tr><td>Repeatable Read (MySQL default)</td><td>—</td><td>—</td><td>Yes*</td></tr>
+              <tr><td>Serializable</td><td>—</td><td>—</td><td>—</td></tr>
+            </tbody>
+          </table>
+          <p>Postgres's "Serializable" uses SSI (Serializable Snapshot Isolation) and may roll back transactions with a serialization failure — your app needs retry logic.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Hard</span> When NoSQL?</summary>
+        <div class="q-body">
+          <ul>
+            <li><b>Document (Mongo, DynamoDB)</b>: unstructured/varied shape, low join needs, write-heavy, scale by sharding.</li>
+            <li><b>Key-value (Redis, DynamoDB)</b>: caches, session store, rate-limit counters, leaderboards.</li>
+            <li><b>Wide-column (Cassandra)</b>: massive writes, time-series, geo-distribution.</li>
+            <li><b>Graph (Neo4j)</b>: heavy relationship traversal — social, fraud, recommendations.</li>
+            <li><b>Search (Elasticsearch, OpenSearch)</b>: full-text, faceted search, log analytics.</li>
+          </ul>
+          <p>Default: Postgres. Reach for NoSQL when you have a specific access pattern that relational handles poorly.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill xhard">Senior</span> Migrations in production — your playbook</summary>
+        <div class="q-body">
+          <ol>
+            <li><b>Backward-compatible first</b>: deploy code that works against both old and new schema.</li>
+            <li><b>Migrate</b>: add columns/tables (additive only). Never drop or rename in one shot.</li>
+            <li><b>Backfill</b>: run a batched data migration in a job (LIMIT/OFFSET or keyset pagination), throttled.</li>
+            <li><b>Switch reads/writes</b>: deploy code that uses the new schema.</li>
+            <li><b>Cleanup</b>: in a later release, drop the old columns/tables.</li>
+          </ol>
+          <p>Avoid: long-running migrations holding locks on big tables. In Postgres, use <code class="inline">CREATE INDEX CONCURRENTLY</code>, <code class="inline">ADD COLUMN ... NULL</code> without default, then backfill.</p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: SYSTEM DESIGN -->
+<!-- ============================================================ -->
+<section class="topic" id="s11">
+  <div class="container">
+    <div class="section-num">Section 11</div>
+    <h2 class="section-title">System design — five practice rounds</h2>
+    <p class="section-desc">At 7 YOE you'll get one or two of these. The expected answer isn't a single architecture — it's a structured conversation about requirements, trade-offs, scale, and failure modes.</p>
+
+    <div class="callout">
+      <h4>Framework to use every time</h4>
+      <p>1) <b>Clarify</b> requirements (functional + non-functional). 2) <b>Estimate</b> scale (QPS, storage, bandwidth). 3) <b>API design.</b> 4) <b>High-level diagram.</b> 5) <b>Data model.</b> 6) <b>Deep-dive</b> 1–2 components. 7) <b>Bottlenecks, failure modes, scaling.</b></p>
+    </div>
+
+    <div class="q-grid">
+
+      <details class="q">
+        <summary><span class="pill hard">Design</span> URL shortener (bit.ly)</summary>
+        <div class="q-body">
+          <ul>
+            <li><b>Clarify</b>: read/write ratio (~100:1), custom aliases, analytics, expiration?</li>
+            <li><b>Scale</b>: 100M URLs/day → ~1.2K writes/sec, 120K reads/sec at peak.</li>
+            <li><b>Encoding</b>: base62 of a 64-bit ID. Or hash(url)[:7] + collision check.</li>
+            <li><b>Storage</b>: Postgres for canonical mapping; Redis for hot reads.</li>
+            <li><b>ID generation</b>: Snowflake-style; or pre-allocated ranges per app server.</li>
+            <li><b>Edge</b>: CDN cache 302 redirects with TTL.</li>
+            <li><b>Analytics</b>: async write to Kafka → ClickHouse / BigQuery, never block the redirect.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Design</span> Rate limiter</summary>
+        <div class="q-body">
+          <p>Algorithms — know all four:</p>
+          <ul>
+            <li><b>Fixed window</b>: count per minute. Simplest; allows bursts at boundaries.</li>
+            <li><b>Sliding window log</b>: store timestamps; precise but memory-heavy.</li>
+            <li><b>Sliding window counter</b>: weighted avg of two adjacent fixed windows. Best balance.</li>
+            <li><b>Token bucket</b>: tokens refill at rate R; request costs 1 token. Allows controlled bursts.</li>
+          </ul>
+          <p><b>Distributed</b>: Redis + Lua script for atomic check-and-decrement. Or a sidecar (Envoy, nginx). Talk about clock skew, hot-key avoidance, fail-open vs fail-closed.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Design</span> News feed (Twitter/Instagram-style)</summary>
+        <div class="q-body">
+          <p>The classic <b>fanout-on-write vs fanout-on-read</b> trade-off.</p>
+          <ul>
+            <li><b>Fanout-on-write (push)</b>: when a user posts, push to all followers' feed caches. Fast reads, expensive for celebrities with 100M followers.</li>
+            <li><b>Fanout-on-read (pull)</b>: at read time, fetch latest posts from each followee. Cheap writes, slow reads.</li>
+            <li><b>Hybrid</b>: push for normal users, pull for celebrities — Twitter's actual approach.</li>
+          </ul>
+          <p>Cover: ranking, cache invalidation, write-heavy storage (Cassandra), media (S3 + CDN), real-time updates (WebSocket/SSE).</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Design</span> File upload + processing pipeline</summary>
+        <div class="q-body">
+          <ul>
+            <li>Pre-signed S3 URL → client uploads directly, app server only mints credentials.</li>
+            <li>S3 event → SQS / SNS → worker pool.</li>
+            <li>Workers process (transcode, OCR, virus scan, thumbnail) with idempotency keys.</li>
+            <li>State machine: <code class="inline">UPLOADED → PROCESSING → READY / FAILED</code>.</li>
+            <li>Dead-letter queue + retry-with-backoff + alerting.</li>
+            <li>Notify client: WebSocket or polling endpoint.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill xhard">Design</span> Distributed job scheduler (like cron at scale)</summary>
+        <div class="q-body">
+          <ul>
+            <li><b>Storage</b>: DB row per job with <code class="inline">next_run_at</code> index.</li>
+            <li><b>Pickers</b>: workers <code class="inline">SELECT ... FOR UPDATE SKIP LOCKED LIMIT N</code> — clean Postgres pattern for safe concurrent claim.</li>
+            <li><b>Execution</b>: separate executor pool; jobs are idempotent so retries are safe.</li>
+            <li><b>Failure</b>: exponential backoff, max retries, DLQ.</li>
+            <li><b>Observability</b>: per-job metrics, alerting on overdue jobs.</li>
+            <li>Compare to: Celery beat, Airflow, Temporal, AWS Step Functions — and when you'd just use one of those instead.</li>
+          </ul>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 12: DSA PATTERNS -->
+<!-- ============================================================ -->
+<section class="topic" id="s12">
+  <div class="container">
+    <div class="section-num">Section 12</div>
+    <h2 class="section-title">DSA — the patterns that pay off</h2>
+    <p class="section-desc">You won't be asked to invert a binary tree blindfolded, but they will probe whether you can pick the right pattern and code it cleanly.</p>
+
+    <div class="q-grid">
+
+      <details class="q">
+        <summary><span class="pill med">Pattern</span> Two pointers</summary>
+        <div class="q-body">
+          <p>For sorted arrays: pair-sum, container-with-most-water, remove-duplicates, three-sum.</p>
+<pre><code><span class="kw">def</span> <span class="fn">two_sum_sorted</span>(arr, target):
+    i, j = <span class="num">0</span>, <span class="fn">len</span>(arr) - <span class="num">1</span>
+    <span class="kw">while</span> i < j:
+        s = arr[i] + arr[j]
+        <span class="kw">if</span> s == target: <span class="kw">return</span> (i, j)
+        <span class="kw">if</span> s < target: i += <span class="num">1</span>
+        <span class="kw">else</span>: j -= <span class="num">1</span></code></pre>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Pattern</span> Sliding window</summary>
+        <div class="q-body">
+          <p>Variable-size window; expand right, contract left while a constraint is broken.</p>
+<pre><code><span class="kw">def</span> <span class="fn">longest_unique</span>(s):
+    seen = {}; left = <span class="num">0</span>; best = <span class="num">0</span>
+    <span class="kw">for</span> right, ch <span class="kw">in</span> <span class="fn">enumerate</span>(s):
+        <span class="kw">if</span> ch <span class="kw">in</span> seen <span class="kw">and</span> seen[ch] >= left:
+            left = seen[ch] + <span class="num">1</span>
+        seen[ch] = right
+        best = <span class="fn">max</span>(best, right - left + <span class="num">1</span>)
+    <span class="kw">return</span> best</code></pre>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Pattern</span> BFS / DFS on graphs and grids</summary>
+        <div class="q-body">
+<pre><code><span class="kw">from</span> collections <span class="kw">import</span> deque
+<span class="kw">def</span> <span class="fn">bfs</span>(start, graph):
+    seen = {start}; q = deque([start])
+    <span class="kw">while</span> q:
+        node = q.popleft()
+        <span class="kw">for</span> nb <span class="kw">in</span> graph[node]:
+            <span class="kw">if</span> nb <span class="kw">not in</span> seen:
+                seen.add(nb); q.append(nb)
+    <span class="kw">return</span> seen</code></pre>
+          <p>DFS — recursion or explicit stack. For grids: 4-way directions <code class="inline">[(-1,0),(1,0),(0,-1),(0,1)]</code>. Track visited or mutate the grid.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Pattern</span> Dynamic programming — the 5 standard shapes</summary>
+        <div class="q-body">
+          <ul>
+            <li><b>1D linear</b>: Fibonacci, climbing stairs, house robber.</li>
+            <li><b>2D grid</b>: unique paths, edit distance, LCS.</li>
+            <li><b>Knapsack</b>: 0/1, unbounded, partition.</li>
+            <li><b>Intervals</b>: matrix chain, palindromic substrings.</li>
+            <li><b>Tree DP</b>: post-order accumulation, e.g. max path sum.</li>
+          </ul>
+          <p>Start with recursion + memoization; convert to tabulation only when needed for space/perf.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Pattern</span> Backtracking template</summary>
+        <div class="q-body">
+<pre><code><span class="kw">def</span> <span class="fn">backtrack</span>(state, choices):
+    <span class="kw">if</span> <span class="fn">is_solution</span>(state):
+        results.append(state.copy())
+        <span class="kw">return</span>
+    <span class="kw">for</span> ch <span class="kw">in</span> choices:
+        <span class="kw">if</span> <span class="fn">valid</span>(state, ch):
+            state.append(ch)
+            <span class="fn">backtrack</span>(state, choices)
+            state.pop()   <span class="com"># undo</span></code></pre>
+          <p>Combinations, permutations, N-queens, Sudoku, word search.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Pattern</span> Top-K with a heap</summary>
+        <div class="q-body">
+          <p>See Section 02. Memorize <code class="inline">heappush/heappop/heapreplace/nlargest</code>.</p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 13: BEHAVIORAL + PLAN -->
+<!-- ============================================================ -->
+<section class="topic" id="s13">
+  <div class="container">
+    <div class="section-num">Section 13</div>
+    <h2 class="section-title">Behavioral & a 2-week prep plan</h2>
+
+    <h3 class="subhead">STAR-framed answers you should have ready</h3>
+    <div class="q-grid">
+      <details class="q">
+        <summary><span class="pill med">Behavioral</span> "Tell me about a hard bug you debugged"</summary>
+        <div class="q-body">
+          <p><b>Structure (STAR):</b></p>
+          <ul>
+            <li><b>Situation</b>: production incident, 2 sentences of context (scale, impact).</li>
+            <li><b>Task</b>: what your responsibility was.</li>
+            <li><b>Action</b>: tools used (logs, py-spy, tracing), hypotheses formed, what you ruled out and why.</li>
+            <li><b>Result</b>: root cause in one sentence, fix, MTTR, what you changed permanently (test, alert, runbook).</li>
+          </ul>
+          <p>Make sure the bug is technically interesting. Concurrency, memory leaks, off-by-one in distributed systems, ORM N+1 hidden behind a property — all good. Avoid "I rebooted it." </p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Behavioral</span> "Tell me about a technical disagreement"</summary>
+        <div class="q-body">
+          <p>The hidden test: are you reasonable, do you change your mind on evidence, do you make decisions and move on?</p>
+          <p>Structure: state both positions fairly → show you sought data (benchmark, prototype, ADR) → describe how you decided → describe how you supported the decision even if it wasn't yours.</p>
+          <p>Anti-pattern: framing yourself as obviously right and the other person as obviously wrong.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill med">Behavioral</span> "Tell me about mentoring or leading"</summary>
+        <div class="q-body">
+          <p>At 7 YOE they expect impact beyond your own code. Examples that work: onboarded N juniors, drove adoption of a tool/framework, ran a tech-talk series, led a migration, wrote design docs that shaped the team's direction, did interview hiring loops.</p>
+        </div>
+      </details>
+
+      <details class="q">
+        <summary><span class="pill hard">Behavioral</span> Questions to ask the interviewer</summary>
+        <div class="q-body">
+          <p>You're being evaluated on these too. Avoid generic ones. Try:</p>
+          <ul>
+            <li>"What's the most painful technical debt the team is carrying right now?"</li>
+            <li>"How does the team decide between building something and adopting an open-source tool?"</li>
+            <li>"What does a 'great' engineer look like at this level here, vs. just a 'good' one?"</li>
+            <li>"What's the on-call rotation look like, and what fraction of pages are real?"</li>
+            <li>"How are architectural decisions made and recorded?"</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <h3 class="subhead">A 14-day plan</h3>
+
+    <div class="day-card">
+      <div class="day-num">01</div>
+      <div><h4>Core language deep dive</h4><p>Sections 1–2 of this guide. Re-do the mutable/immutable, GIL, dict internals questions out loud.</p></div>
+    </div>
+    <div class="day-card">
+      <div class="day-num">02</div>
+      <div><h4>OOP + dunder + Protocols</h4><p>Section 3. Write a descriptor and a metaclass from scratch.</p></div>
+    </div>
+    <div class="day-card">
+      <div class="day-num">03</div>
+      <div><h4>Functional, iterators, generators</h4><p>Section 4. Re-implement <code class="inline">itertools.groupby</code>.</p></div>
+    </div>
+    <div class="day-card">
+      <div class="day-num">04</div>
+      <div><h4>Decorators & context managers</h4><p>Section 5. Build a parameterized retry decorator with jitter.</p></div>
+    </div>
+    <div class="day-card">
+      <div class="day-num">05</div>
+      <div><h4>Concurrency intensive</h4><p>Section 6. Implement producer/consumer in all three models.</p></div>
+    </div>
+    <div class="day-card">
+      <div class="day-num">06</div>
+      <div><h4>Memory + performance</h4><p>Section 7. Profile a real script with cProfile + py-spy.</p></div>
+    </div>
+    <div class="day-card">
+      <div class="day-num">07</div>
+      <div><h4>Testing + tooling refresher</h4><p>Section 8. Set up a fresh project with uv + ruff + pytest + mypy.</p></div>
+    </div>
+    <div class="day-card">
+      <div class="day-num">08</div>
+      <div><h4>Pick your framework, go deep</h4><p>Section 9. Build one small CRUD app end-to-end in FastAPI or Django.</p></div>
+    </div>
+    <div class="day-card">
+      <div class="day-num">09</div>
+      <div><h4>SQL & ORM</h4><p>Section 10. Practice writing JOINs and window functions; explain query plans.</p></div>
+    </div>
+    <div class="day-card">
+      <div class="day-num">10</div>
+      <div><h4>System design 1</h4><p>URL shortener + rate limiter. Whiteboard out loud, time-boxed to 45 min each.</p></div>
+    </div>
+    <div class="day-card">
+      <div class="day-num">11</div>
+      <div><h4>System design 2</h4><p>News feed + file pipeline. Same drill.</p></div>
+    </div>
+    <div class="day-card">
+      <div class="day-num">12</div>
+      <div><h4>DSA patterns</h4><p>Section 12. One problem per pattern. LeetCode mediums; avoid hards unless you're already comfortable.</p></div>
+    </div>
+    <div class="day-card">
+      <div class="day-num">13</div>
+      <div><h4>Behavioral rehearsal</h4><p>Write down 6 STAR stories. Practice 2 of them out loud, on camera, edit, repeat.</p></div>
+    </div>
+    <div class="day-card">
+      <div class="day-num">14</div>
+      <div><h4>Mock interview + rest</h4><p>One end-to-end mock (pramp / friend). Don't cram the night before; sleep well.</p></div>
+    </div>
+
+    <div class="callout" style="margin-top:36px;">
+      <h4>Final tips</h4>
+      <p>Think aloud. Restate the question before answering. Optimize the second pass, not the first. Be specific with versions, libraries, and numbers — vague answers feel junior even when correct. And when you don't know something: say so, then say how you'd find out.</p>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="glyph">✺</div>
+    <p>Good luck. You've got this.</p>
+  </div>
+</footer>
+
+<script>
+  // Reading progress bar
+  const bar = document.getElementById('progress');
+  document.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+    bar.style.width = scrolled + '%';
+  });
+</script>
+
+</body>
+</html>
